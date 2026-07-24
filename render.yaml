@@ -1,0 +1,34 @@
+services:
+  # -------------------------------------------------------------
+  # 1. Flask Machine Learning Prediction Microservice
+  # -------------------------------------------------------------
+  - type: web
+    name: churn-predict-service
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt && python train_model.py
+    startCommand: gunicorn predict_service:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+  # -------------------------------------------------------------
+  # 2. Node.js Express API Gateway & Ingestion Server
+  # -------------------------------------------------------------
+  - type: web
+    name: churn-backend-api
+    env: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: PREDICT_SERVICE_URL
+        fromService:
+          type: web
+          name: churn-predict-service
+          property: host
