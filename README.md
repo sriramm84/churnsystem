@@ -44,6 +44,24 @@ graph TD
 
 ---
 
+## 📁 Project Structure
+
+```
+churnsystem/
+├── backend/            # Express.js API gateway (MongoDB-backed)
+├── frontend/           # React executive dashboard
+├── kafka/              # Kafka event producer
+├── spark/              # Spark streaming consumer, features, offer engine
+├── orchestrator/       # Pipeline controller with batch fallback
+├── models/             # Trained model artifact (churn_model.pkl)
+├── data/               # Telco churn dataset & feedback logs
+├── predict_service.py  # Flask ML scoring microservice
+├── train_model.py      # Model training script
+└── render.yaml         # Render deployment blueprint
+```
+
+---
+
 ## 🚀 Quick Start Guide (Local Setup)
 
 ### Prerequisites
